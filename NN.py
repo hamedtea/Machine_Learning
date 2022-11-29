@@ -1,12 +1,18 @@
 
 import numpy as np
+import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import Sequential
 from keras import layers
 from keras import utils
 
-exec(open("readData.py").read())
+exec(open("readData.py").read()) 
+
+# one hot encode outputs 
+Y_train = utils.to_categorical(Y_train) 
+Y_test = utils.to_categorical(Y_test) 
+num_classes = Y_test.shape[1]
 
 def neural_netwrok(X_train, Y_train, X_test, Y_test):
   #encoded_Y_train = keras.utils.to_categorical(Y_train, dtype ="float32")
@@ -28,15 +34,16 @@ def neural_netwrok(X_train, Y_train, X_test, Y_test):
   #compile model
   model.compile(
     #loss = keras.losses.SparseCategoricalCrossentropy(from_logits = True),     
-    optimizer = keras.optimizers.Adam(learning_rate=0.01),
-    loss = keras.losses.SparseCategoricalCrossentropy(from_logits=True), 
-    metrics =["accuracy"],
+    optimizer = 'adam',
+    #sgd = SGD(lr=lrate, momentum=0.9, decay=decay, nesterov=False) 
+    loss = ['mse'],
+    metrics =['accuracy'],
     #metrics=['sparse_categorical_accuracy'],                                            
     )
   #fit the moodel with training data and encoded one hot labels 
-  training_history = model.fit(X_train, Y_train, batch_size = 62, epochs = 5, 
+  training_history = model.fit(X_train, Y_train, batch_size = 32, epochs =6, 
                               verbose = 1, validation_data = (X_test, Y_test), 
-                               shuffle = True)
+                               shuffle = True, validation_split=0.33)
   #make predictions
   pre=model.predict(X_test)
   NN_predictions = np.argmax(pre, axis = 1)
@@ -62,15 +69,14 @@ def NN_model_summary(Y_test):
   print('model accuracy equals to', test_accuracy )
   print(model_summary())
   #plot loss function
-  plt.plot(training_history.history['loss'])
+  """plt.plot(training_history.history['loss'])
   plt.plot(training_history.history['val_loss'])
   plt.title('model loss')
   plt.ylabel('loss')
   plt.xlabel('epochs')
   plt.legend(['train_loss', 'value of loss'], loc = 'upper right')
-  plt.show
+  plt.show"""
   #plot accuracy function
-  plt.figure()
   plt.plot(training_history.history['accuracy'])
   plt.plot(training_history.history['val_accuracy'])
   plt.title('model accuracy')
