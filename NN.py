@@ -29,9 +29,9 @@ def neural_netwrok(X_train, Y_train, X_test, Y_test):
   model.compile(
     #loss = keras.losses.SparseCategoricalCrossentropy(from_logits = True),     
     optimizer = keras.optimizers.Adam(learning_rate=0.01),
-    #metrics =["accuracy"],
-    loss='categorical_crossentropy', 
-    metrics=['sparse_categorical_accuracy'],                                            
+    loss = keras.losses.SparseCategoricalCrossentropy(from_logits=True), 
+    metrics =["accuracy"],
+    #metrics=['sparse_categorical_accuracy'],                                            
     )
   #fit the moodel with training data and encoded one hot labels 
   training_history = model.fit(X_train, Y_train, batch_size = 62, epochs = 5, 
@@ -87,4 +87,4 @@ def main():
   return
 
 if __name__=="__main__":
-    main()
+  main()
