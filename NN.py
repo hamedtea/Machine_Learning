@@ -58,8 +58,6 @@ def neural_netwrok(X_train, Y_train, X_test, Y_test):
 
 def NN_model_summary(Y_test):
   model_summary, training_history, NN_predictions, test_loss, test_accuracy = neural_netwrok(X_train, Y_train, X_test, Y_test)
-  acc = class_acc(NN_predictions, Y_test)
-  print("the accuracy of better NN model is", acc)
   print('model loss equals to', test_loss)
   print('model accuracy equals to', test_accuracy )
   print(model_summary())
